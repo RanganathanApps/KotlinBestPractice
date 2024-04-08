@@ -19,6 +19,6 @@ class ExampleUnitTest {
     fun jUniTest_happy_path() {
         val a = true
         val b = false
-        assertTrue("failed",  (a != b))
+        assertFalse("failed",  (a != b))
     }
 }
