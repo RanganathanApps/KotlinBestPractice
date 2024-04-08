@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.hilt)
     //id("com.google.dagger.hilt.android")
     kotlin("kapt")
+    id("org.sonarqube") version "4.4.1.3373"
 }
 
 android {
@@ -58,6 +59,13 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+    sonar{
+        properties {
+            property("sonar.projectKey", "RanganathanApps_KotlinBestPractice")
+            property("sonar.organization", "ranganathanapps")
+            property("sonar.host.url", "https://sonarcloud.io")
         }
     }
 }
