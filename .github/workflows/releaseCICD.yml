@@ -62,6 +62,7 @@ jobs:
           path: app/build/reports/lint-results-debug.html
   unit-test:
     name: Perform Unit Testing
+    needs: [ lint ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
@@ -71,12 +72,13 @@ jobs:
         uses: ./gradlew test
 
       - name: Upload test report
-        uses: actions/upload-artifact@v2
+        uses: actions.upload-artifact@v4.3.1
         with:
           name: unit_test_report
           path: app/build/reports/test/testDebugUnitTest/
   debug-apk:
         name: Generate Debug APK
+        needs: [ unit-test ]
         runs-on: ubuntu-latest
         steps:
           - name: Checkout the code
