@@ -36,7 +36,6 @@ jobs:
           echo test, and deploy your project.
   debug-apk:
         name: Generate Debug APK
-        needs: [ static-code-analysis ]
         runs-on: ubuntu-latest
         steps:
           - name: Checkout the code
