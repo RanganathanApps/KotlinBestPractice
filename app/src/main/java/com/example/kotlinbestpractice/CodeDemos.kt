@@ -4,6 +4,7 @@ import com.example.kotlinbestpractice.movies.domain.model.Movie
 
 fun main() {
 
+    calculateCircleArea(2.2)
     // while
     var counter = 0
     while( counter < 100) {
