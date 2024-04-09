@@ -126,7 +126,7 @@ jobs:
           distribution: 'zulu' # See 'Supported distributions' for available options
           cache: 'gradle'
 
-      - name: build release
+      - name: build Debug APK
         run: ./gradlew assembleDebug
       - name: upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
