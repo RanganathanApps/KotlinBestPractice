@@ -1,0 +1,63 @@
+name: On Pull Request
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - release
+      - feature/*
+      - development
+  push:
+    branches:
+      - develop
+      - release
+      - feature/*
+      - development
+  workflow_dispatch:
+
+jobs:
+    build:
+      # The type of runner that the job will run on
+      runs-on: ubuntu-latest
+
+      # Steps represent a sequence of tasks that will be executed as part of the job
+      steps:
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        - uses: actions/checkout@v3
+
+        # Set Current Date As Env Variable
+        - name: Set current date as env variable
+          run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+        # Runs a set of commands using the runners shell
+        - name: Run a multi-line script
+          run: |
+            echo Add other actions to build,
+            echo test, and deploy your project.
+
+
+    lint:
+      name: Lint on Debug variant
+      needs:
+        - build
+      uses: ./.github/workflows/android-lint.yml
+
+
+    unit-test:
+      name: Unit Test
+      needs:
+        - lint
+      uses: ./.github/workflows/unit-test.yml
+
+
+    sonar-cloud:
+      name: SonarCloud Analysis
+      needs:
+        - unit-test
+      uses: ./.github/workflows/sonar-cloud.yml
+
+    buildCD-pipeline:
+      name: CD-pipeline
+      needs:
+        - sonar-cloud
+      uses: ./.github/workflows/releaseCICD.yml
