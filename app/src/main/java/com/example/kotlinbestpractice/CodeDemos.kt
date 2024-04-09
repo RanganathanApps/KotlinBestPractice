@@ -5,6 +5,8 @@ import com.example.kotlinbestpractice.movies.domain.model.Movie
 fun main() {
 
     calculateCircleArea(2.2)
+    checkup()
+    divide(6,3)
     // while
     var counter = 0
     while( counter < 100) {
@@ -140,4 +142,41 @@ fun calculateSalePrice(itemPrice: Double, quantityInStock: Double, margin: Doubl
     } else {
         calculateSalePrice(itemPrice, margin)
     }
+}
+enum class Gender{
+    MALE,
+    FEMALE
+}
+class Friend(val name: String, val age: Int, val sex: Gender){
+
+}
+fun checkup(){
+    val friends= mutableListOf(
+        Friend("ranga",32, Gender.MALE),
+            Friend("JK",21, Gender.FEMALE),
+            Friend("nathan",31, Gender.MALE)
+    )
+    // Snippet-1
+    friends.filter{ it.sex == Gender.MALE }
+        .map{ it.age }
+        .filter{ it > 10 }
+        .min()
+
+    // Snippet-2
+    friends.filter{ friend -> friend.sex == Gender.MALE }
+        .map{ maleFriend -> maleFriend.age }
+        .filter { birthDay -> birthDay > 10 }
+        .min()
+}
+fun processOrder(order: Movie) {
+    fun validateOrder(order: Movie) {
+        // Validation logic
+    }
+
+    fun calculateTotal(order: Movie) {
+        // Total calculation logic
+    }
+
+    validateOrder(order)
+    calculateTotal(order)
 }
