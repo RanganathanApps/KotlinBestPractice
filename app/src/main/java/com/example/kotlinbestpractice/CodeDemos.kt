@@ -167,6 +167,8 @@ fun checkup(){
         .map{ maleFriend -> maleFriend.age }
         .filter { birthDay -> birthDay > 10 }
         .min()
+
+    val mentorIds = friends.mapNotNull { employee -> employee.age }.distinct()
 }
 fun processOrder(order: Movie) {
     fun validateOrder(order: Movie) {
