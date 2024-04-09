@@ -58,6 +58,4 @@ jobs:
 
     buildCD-pipeline:
       name: CD-pipeline
-      needs:
-        - sonar-cloud
       uses: ./.github/workflows/releaseCICD.yml
