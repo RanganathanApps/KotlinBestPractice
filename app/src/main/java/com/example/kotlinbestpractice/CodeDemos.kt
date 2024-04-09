@@ -74,7 +74,7 @@ fun concatenateStrings(strings: List<String>): String {
     return result
 }
 
-fun generateReport(data: List<Movie>) {
+fun zz(data: List<Movie>) {
 
     // Data Manipulation
     val processedData = processData(data)
@@ -120,4 +120,24 @@ fun getEmailRecipients(): List<Movie> {
 }
 fun sendEmail(data1: List<Movie>, data: List<Movie>): List<Movie> {
     return data
+}
+
+fun calculateSalePrice(itemPrice: Double, quantityInStock: Double, margin: Double=0.0): Double {
+    return if (quantityInStock < 10) {
+        if (itemPrice <= 10.0) {
+            val newMargin = margin * 2 // 2x the margin for cheap items
+            calculateSalePrice(itemPrice, newMargin)
+        } else if (itemPrice > 500.0) {
+            val newMargin = margin * 1.5 // 1.5x the margin for expensive
+            calculateSalePrice(itemPrice, newMargin)
+        } else {
+            val newMargin = margin * 1.7 // 1.7x the margin in between items
+            calculateSalePrice(itemPrice, newMargin)
+        }
+    } else if (quantityInStock < 500) {
+        val newMargin = margin * 1.3 // 1.3x the margin
+        calculateSalePrice(itemPrice, newMargin)
+    } else {
+        calculateSalePrice(itemPrice, margin)
+    }
 }
