@@ -19,5 +19,15 @@ fun main() {
         counter2++
     } while ( counter2 != 100)
 
+    val countryCode = getCountryCode("India")
+
 }
 
+
+fun getCountryCode(countryName: String?=""): String {
+    return when(countryName){
+        "India" -> "IN"
+        "United States" -> "US"
+        else -> "Unknown"
+    }
+}
