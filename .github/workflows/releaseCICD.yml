@@ -109,12 +109,17 @@ jobs:
           groups: testers
           file: app/build/outputs/apk/debug/app-debug.apk
 
-  sign-Apk:
-    name: Sign AAB
-    uses: r0adkll/sign-android-release@v1
-    with:
-        releaseDirectory: app/build/outputs/bundle/release
-        signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-        alias: ${{ secrets.ALIAS }}
-        keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-        keyPassword: ${{ secrets.KEY_PASSWORD }}
+  sign-apk:
+    name: Build Release AAB
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Release AAB
+        uses: r0adkll/sign-android-release@v1
+        id: buildRelease
+        run: ./gradlew bundleRelease
+        with:
+          releaseDirectory: app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
