@@ -113,6 +113,9 @@ jobs:
     name: Build Release AAB
     runs-on: ubuntu-latest
     steps:
+      - name: Assemble Release Bundle
+        run: |
+              ./gradlew assembleRelease
       - name: Build Release AAB
         uses: r0adkll/sign-android-release@v1
         id: sign
