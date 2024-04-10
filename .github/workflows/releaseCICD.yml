@@ -122,9 +122,9 @@ jobs:
 
       - name: Build
         run: ./gradlew build
+
       - name: Assemble Release Bundle
-        run: |
-              ./gradlew assembleRelease
+        run: ./gradlew assembleRelease
 
       - name: Build Release AAB
         uses: r0adkll/sign-android-release@v1
