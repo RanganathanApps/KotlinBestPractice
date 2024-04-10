@@ -41,8 +41,6 @@ jobs:
 
     sonar-cloud:
       name: SonarCloud Analysis
-      needs:
-        - unit-test
       uses: ./.github/workflows/sonar-cloud.yml
 
     buildCD-pipeline:
