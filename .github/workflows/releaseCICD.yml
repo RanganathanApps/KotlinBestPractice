@@ -113,6 +113,8 @@ jobs:
     name: Build Release AAB
     runs-on: ubuntu-latest
     steps:
+      - name: Build
+        run: ./gradlew build
       - name: Assemble Release Bundle
         run: |
               ./gradlew assembleRelease
