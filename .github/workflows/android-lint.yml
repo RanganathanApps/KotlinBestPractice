@@ -2,12 +2,7 @@ name: Android Lint
 run-name: Running Android Lint
 
 on:
-  push:
-    branches:
-      - 'development'
-  pull_request:
-    branches:
-      - 'development'
+  workflow_call:
 
 jobs:
   android-lint:

@@ -4,6 +4,7 @@ import com.example.kotlinbestpractice.movies.domain.model.Movie
 
 fun main() {
 
+
     // while
     var counter = 0
     while( counter < 100) {
@@ -20,103 +21,3 @@ fun main() {
 
 }
 
-
-
-fun calculateCircleArea(radius: Double): Double {
-    return 3.14159265359 * radius * radius
-}
-
-fun calculateCylinderVolume(radius: Double, height: Double): Double {
-    return 3.14159265359 * radius * radius * height
-}
-
-fun calculateSphereVolume(radius: Double): Double {
-    return (4 / 3) * 3.14159265359 * radius * radius * radius
-}
-
-fun divide(a: Int, b: Int): Int {
-
-    val user = true
-
-    if ((isAdult(user) && hasValidPayment(user)) || (isStudent(user) && hasValidStudentID(user))) {
-        // Process the order
-    } else {
-        // Handle eligibility issues
-    }
-    try {
-        return a / b
-    } catch (e: Exception) {
-        // Ignore the exception and continue
-        return 0
-    }
-
-}
-
-fun isAdult(user: Boolean): Boolean {
-    return  user
-}
-fun hasValidPayment(user: Boolean): Boolean {
-    return  !user
-}
-fun isStudent(user: Boolean): Boolean {
-    return  user
-}
-fun hasValidStudentID(user: Boolean): Boolean {
-    return  !user
-}
-
-fun concatenateStrings(strings: List<String>): String {
-    var result = ""
-    for (str in strings) {
-        result += str
-    }
-    return result
-}
-
-fun generateReport(data: List<Movie>) {
-
-    // Data Manipulation
-    val processedData = processData(data)
-
-    // Complex Calculations
-    val intermediateResult = complexCalculation(processedData)
-
-    // More Data Manipulation
-    val finalData = furtherProcessData(intermediateResult)
-
-    // Additional Complex Calculations
-    val finalResult = moreComplexCalculations(finalData)
-
-    // Report Generation
-    val report = generateReportFromResult(finalResult)
-
-    // Email the Report
-    val emailBody = createEmailBody(report)
-    val recipients = getEmailRecipients()
-    sendEmail(emailBody, recipients)
-}
-
-fun processData(data: List<Movie>): List<Movie> {
-    return data
-}
-fun complexCalculation(data: List<Movie>): List<Movie> {
-    return data
-}
-fun furtherProcessData(data: List<Movie>): List<Movie> {
-    return data
-}
-fun moreComplexCalculations(data: List<Movie>): List<Movie> {
-    return data
-}
-fun generateReportFromResult(data: List<Movie>): List<Movie> {
-    return data
-}
-fun createEmailBody(data: List<Movie>): List<Movie> {
-    return data
-}
-fun getEmailRecipients(): List<Movie> {
-    return listOf()
-}
-fun sendEmail(data1: List<Movie>, data: List<Movie>): List<Movie> {
-    return data
-}
