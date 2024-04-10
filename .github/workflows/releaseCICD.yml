@@ -109,10 +109,8 @@ jobs:
           groups: testers
           file: app/build/outputs/apk/debug/app-debug.apk
 
-
   sign-Apk:
     name: Sign AAB
-    id: sign
     uses: r0adkll/sign-android-release@v1
     with:
         releaseDirectory: app/build/outputs/bundle/release
