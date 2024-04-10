@@ -1,18 +1,7 @@
 name: On Pull Request
 
 on:
-  pull_request:
-    branches:
-      - develop
-      - release
-      - feature/*
-      - development
-  push:
-    branches:
-      - develop
-      - release
-      - feature/*
-      - development
+
   workflow_dispatch:
 
 jobs:
