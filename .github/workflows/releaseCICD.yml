@@ -48,16 +48,11 @@ jobs:
       - lint
     uses: ./.github/workflows/unit-test.yml
 
-  build-debug-apk:
-    name: Debug Apk
-    needs:
-      - unit-test
-    uses: ./.github/workflows/build_debug_apk.yml
-
-
 
   sonar-code-analysis:
     name: Build and analyze
+    needs:
+      - unit-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -86,9 +81,17 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew build sonar --info
 
+  build-debug-apk:
+    name: Debug Apk
+    needs:
+      - sonar-code-analysis
+    uses: ./.github/workflows/build_debug_apk.yml
+
 
   app-dist:
-
+    name: App Distribution
+    needs:
+      - build-debug-apk
     runs-on: ubuntu-latest
 
     steps:
