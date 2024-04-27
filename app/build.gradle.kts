@@ -1,11 +1,10 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    //alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
-    //id("com.google.dagger.hilt.android")
     kotlin("kapt")
     id("org.sonarqube") version "4.4.1.3373"
+    id("kotlinx-serialization")
 }
 
 android {
@@ -72,22 +71,28 @@ android {
 
 dependencies {
 
+    // Arch Components
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
 
-    // Arch Components
+    // Activity
+    implementation (libs.androidx.activity)
+
+    // lifecycle
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    //implementation(libs.androidx.navigation.compose)
-    //implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
+    // ui
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-
+    // navigation
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // retrofit
     implementation(libs.squareup.retrofit2)
@@ -95,20 +100,27 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp.logging.interceptor)
 
-    // Dagger - Hilt
-    /*implementation(libs.hilt.android)
-    ksp (libs.hilt.compiler)
-    ksp(libs.androidx.hilt.compiler)*/
-    //implementation(libs.androidx.hilt.navigation.compose)
-    implementation("com.google.dagger:hilt-android:2.48.1")
-    implementation(libs.androidx.lifecycle.runtime.compose)
-    kapt ("com.google.dagger:dagger-compiler:2.48.1")
-    kapt ("com.google.dagger:hilt-android-compiler:2.48.1")
+    // ktor
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
 
-    // navigation
-    //implementation(libs.androidx.navigation.compose)
-    // for image rendering
-    //implementation (libs.io.coil)
+    // Dagger - Hilt
+    implementation(libs.hilt.android)
+    kapt (libs.dagger.compiler)
+    kapt (libs.hilt.android.compiler)
+
+    // coil from coroutine for image loading
+    implementation (libs.io.coil)
+
+    // Splash API
+    implementation (libs.androidx.core.splashscreen)
+
+    //youtube player
+    implementation (libs.youtube.core)
 
     /*test*/
     testImplementation(libs.junit)

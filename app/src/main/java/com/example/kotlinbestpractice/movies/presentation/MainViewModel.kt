@@ -1,16 +1,21 @@
 package com.example.kotlinbestpractice.movies.presentation
 
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kotlinbestpractice.movies.data.repo.MovieListRepoImpl
+import com.example.kotlinbestpractice.movies.domain.model.Movie
 import com.example.kotlinbestpractice.movies.domain.repository.MoviesRepository
 import com.example.kotlinbestpractice.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,42 +23,44 @@ import javax.inject.Inject
 on 03-04-2024
  **/
 @HiltViewModel
-class MainViewModel @Inject constructor( private val repository: MoviesRepository): ViewModel() {
-    val countDownFlow = flow<Int> {
-        val start = 10
-        var currentValue = start
-        emit(start)
-        while(currentValue > 0){
-            delay(1000L)
-            currentValue--
-            emit(currentValue)
-        }
+class MainViewModel @Inject constructor(private val repository: MoviesRepository) : ViewModel() {
+
+    private val _state = MutableStateFlow(MovieScreenState())
+    val uiState: StateFlow<MovieScreenState> = _state.asStateFlow()
 
 
-    }
+    var llState: LazyGridState by mutableStateOf( LazyGridState(0,0))
 
-    init {
-
-       fetchMovies()
-    }
-
-    private fun fetchMovies() {
+    fun fetchMovies(year: String) {
         viewModelScope.launch {
-            repository.getPopularMovies().collectLatest { result ->
+            repository.getMovies(year).collectLatest { result ->
                 when (result) {
-                    is NetworkResult.Error ->  println(" api failed ${result.message}")
-                    is NetworkResult.Loading ->  println(" api loading ${result.isLoading}")
-                    is NetworkResult.Success -> {
-                        result.data?.let { popularList ->
-                            /* _movieListState.update {
+                    is NetworkResult.Error -> {
+                        _state.update {
                             it.copy(
-                                popularMovieList = movieListState.value.popularMovieList
-                                        + popularList.shuffled()
+                                isLoading = false,
+                                error = " api failed ${result.message}",
+                                data = null
                             )
-                        }*/
-
-                            popularList.forEach {
-                                println(" api results ${it.title}")
+                        }
+                    }
+                    is NetworkResult.Loading -> {
+                        _state.update {
+                            it.copy(
+                                isLoading = true,
+                                error = " api failed ${result.message}",
+                                data = null
+                            )
+                        }
+                    }
+                    is NetworkResult.Success -> {
+                        result.data?.results?.let { popularList ->
+                            _state.update {
+                                it.copy(
+                                    isLoading = false,
+                                    data = popularList,
+                                    error = null
+                                )
                             }
                         }
                     }

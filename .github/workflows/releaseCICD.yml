@@ -37,27 +37,18 @@ jobs:
 
   lint:
     name: Lint on Debug variant
-    needs:
-      - build
     uses: ./.github/workflows/android-lint.yml
 
 
   unit-test:
     name: Unit Test
-    needs:
-      - lint
     uses: ./.github/workflows/unit-test.yml
-
-  build-debug-apk:
-    name: Debug Apk
-    needs:
-      - unit-test
-    uses: ./.github/workflows/build_debug_apk.yml
-
 
 
   sonar-code-analysis:
     name: Build and analyze
+    needs:
+      - unit-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -86,9 +77,16 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew build sonar --info
 
+  build-debug-apk:
+    name: Debug Apk
+    needs:
+      - sonar-code-analysis
+    uses: ./.github/workflows/build_debug_apk.yml
 
   app-dist:
-
+    name: App Distribution
+    needs:
+      - build-debug-apk
     runs-on: ubuntu-latest
 
     steps:
@@ -110,3 +108,37 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: app/build/outputs/apk/debug/app-debug.apk
+
+  sign-apk:
+    name: Build Release AAB
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3
+
+      - name: Set up Java JDK 17
+        uses: actions/setup-java@v4.2.1
+        with:
+            java-version: '17'
+            distribution: 'zulu'
+            cache: 'gradle'
+
+      - name: Build
+        run: ./gradlew build
+
+      - name: Build Release AAB
+        uses: r0adkll/sign-android-release@v1
+        id: sign
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Upload AAB
+        id: uploadArtifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: app
+          path: app/build/outputs/apk/release
